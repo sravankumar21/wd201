@@ -1,4 +1,3 @@
-const { describe } = require('yargs');
 const todoList = require("../todo");
 const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 describe("TodoList test suite", () => {
