@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 const todoList = () => {
-  all = [];
+  let all = [];
   const add = (todoItem) => {
     all.push(todoItem);
   };
@@ -10,31 +9,36 @@ const todoList = () => {
 
   const overdue = () => {
     return all.filter(
-      (item) => item.dueDate < new Date().toLocaleDateString("en-CA")
+      (x) =>
+        x.dueDate === new Date(Date.now() - 86400000).toISOString().slice(0, 10)
     );
   };
 
   const dueToday = () => {
     return all.filter(
-      (item) => item.dueDate === new Date().toLocaleDateString("en-CA")
+      (x) => x.dueDate === new Date().toISOString().slice(0, 10)
     );
   };
 
   const dueLater = () => {
     return all.filter(
-      (item) => item.dueDate > new Date().toLocaleDateString("en-CA")
+      (x) =>
+        x.dueDate === new Date(Date.now() + 86400000).toISOString().slice(0, 10)
     );
   };
 
   const toDisplayableList = (list) => {
-    const completionStatus = item.completed ? "[x]" : "";
-    const displayedDate =
-      item.dueDate === new Date().toISOString().slice(0, 10)
-        ? ""
-        : item.dueDate;
-    return list.map(
-      (item) => $(completionStatus) + $(item.title) + $(displayedDate)
-    );
+    let l = list
+      .map(
+        (x) =>
+          `${x.completed ? "[x]" : "[ ]"} ${x.title.trim()} ${
+            x.dueDate == new Date().toISOString().split("T")[0]
+              ? ""
+              : x.dueDate.trim()
+          }`
+      )
+      .join("\n");
+    return l;
   };
 
   return {
@@ -47,4 +51,5 @@ const todoList = () => {
     toDisplayableList,
   };
 };
+
 module.exports = todoList;
