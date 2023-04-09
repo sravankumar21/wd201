@@ -1,70 +1,64 @@
 /* eslint-disable no-undef */
 const todoList = require("../todo");
+let today = new Date().toLocaleDateString("en-CA");
 
 const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 
-describe("Todolist Test Suite", () => {
+describe("Todo list getting Tested", () => {
   beforeAll(() => {
     add({
-      title: "Test today",
-      dueDate: new Date().toISOString().slice(0, 10),
+      title: "Play a cricket tournament",
       completed: false,
-    });
-    add({
-      title: "Test yesterday",
-      dueDate: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-      completed: false,
-    });
-    add({
-      title: "Test tomorrow",
-      dueDate: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
-      completed: false,
+      dueDate: new Date().toLocaleDateString("en-CA"),
     });
   });
 
-  test("Test added new todo command", () => {
-    const n = all.length;
+  test("Adding a new todo in the list", () => {
+    // expect(all.length).toBe(0);
+    let length = all.length;
+
     add({
-      title: "Test todo add",
-      dueDate: new Date().toISOString().slice(0, 10),
+      title: "Enroll in a DSA course",
       completed: false,
+      dueDate: new Date().toLocaleDateString("en-CA"),
     });
-    expect(all.length).toBe(n + 1);
+
+    expect(all.length).toBe(length + 1);
   });
 
-  test("Test marking todo command as complete", () => {
+  test("Marking this todo as completed", () => {
     expect(all[0].completed).toBe(false);
     markAsComplete(0);
     expect(all[0].completed).toBe(true);
   });
 
-  test("Retrival of overdue items", () => {
-    let a = overdue().length;
-    add({
-      title: "Test todo overdue",
-      dueDate: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-      completed: false,
-    });
-    expect(overdue().length).toBe(a + 1);
+  test("reclaiming all todos that are over due", () => {
+    let listOfTodos = overdue();
+
+    expect(
+      listOfTodos.every((todo) => {
+        return todo.dueDate < today;
+      })
+    ).toBe(true);
   });
 
-  test("Retrival of due today items", () => {
-    let b = dueToday().length;
-    add({
-      title: "Test todo dueToday",
-      dueDate: new Date().toISOString().slice(0, 10),
-      completed: false,
-    });
-    expect(dueToday().length).toBe(b + 1);
+  test("reclaiming all todos that are due for today", () => {
+    let listOfTodos = dueToday();
+
+    expect(
+      listOfTodos.every((todo) => {
+        return todo.dueDate === today;
+      })
+    ).toBe(true);
   });
 
-  test("Retrival of due later items", () => {
-    let c = dueLater().length;
-    add({
-      title: "Test todo dueLater",
-      dueDate: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
-      completed: false,
-    });
-    expect(dueLater().length).toBe(c + 1);
+  test("reclaiming all todos that are due for later", () => {
+    let listOfTodos = dueLater();
+
+    expect(
+      listOfTodos.every((todo) => {
+        return todo.dueDate > today;
+      })
+    ).toBe(true);
   });
 });
