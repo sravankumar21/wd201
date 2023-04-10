@@ -6,7 +6,7 @@ const todoList = () => {
   };
 
   const markAsComplete = (index) => {
-    if (all[index]) {
+    if (index >= 0 && index < all.length && !all[index].completed) {
       all[index].completed = true;
     }
   };
