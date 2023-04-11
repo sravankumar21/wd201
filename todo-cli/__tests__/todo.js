@@ -1,9 +1,18 @@
 /* eslint-disable no-undef */
 
-const todoList = require("../todo");
+//const todoList = require("../todo");
 
-describe("Todo list getting tested", () => {
-  let today;
+let { all, add, markAsComplete, overdue, dueToday, dueLater } = todoList();
+
+beforeAll(() => {
+  today = new Date().toLocaleDateString("en-CA");
+  add({
+    title: "Play a cricket tournament",
+    completed: false,
+    dueDate: today,
+  });
+});
+
 
   beforeAll(() => {
     today = new Date().toLocaleDateString("en-CA");
