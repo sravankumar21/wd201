@@ -6,10 +6,13 @@ const todoList = () => {
   };
 
   const markAsComplete = (index) => {
-    if (index >= 0 && index < all.length && !all[index].completed) {
-      all[index].completed = true;
-    }
-  };
+  if (index >= 0 && index < all.length && !all[index].completed) {
+    all[index].completed = true;
+    return true;
+  }
+  return false;
+};
+
 
   const overdue = () => {
     const today = new Date().toLocaleDateString("en-CA");
